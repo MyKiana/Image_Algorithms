@@ -7,6 +7,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_PREFIX_PATH "D:/SoftWare/Qt/5.14.2/msvc2017_64")
+set(OpenCV_DIR "D:/SoftWare/opencv/opencv4.7.0_notcuda/x64/vc15/lib")
 
 find_package(Qt5 COMPONENTS
         Core
@@ -14,11 +15,29 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(Image_Algorithms main.cpp)
+find_package(OpenCV REQUIRED)
+
+include_directories(
+        ${OpenCV_INCLUDE_DIRS}
+        ${LIBUSB_DIR}
+)
+link_directories(
+        ${OpenCV_LIBS}
+        ${LIBUSB_LIB}
+)
+
+add_executable(Image_Algorithms main.cpp
+        Src/Main.cpp
+        Src/Main.h
+        Src/Main.ui
+        M_Algorithms/My_Canny.cpp
+        M_Algorithms/My_Canny.h)
+
 target_link_libraries(Image_Algorithms
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        ${OpenCV_LIBS}
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
